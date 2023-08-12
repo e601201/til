@@ -9,8 +9,20 @@ function main (){
   checkCreateSheat()
   // 記事取得
   const articleList = listDailyFigureInfo(url)
-  // 取得した記事ごとに情報を抽出して追加
   articleList.forEach(setInfoList);
+}
+
+/**
+ * リストに追加されたタイトルを配列で取得
+ * return array:タイトル
+ */
+function getListedTitles() {
+  let list = [];
+  const data = sheet.getDataRange().getValues().slice(1); 
+  data.forEach(function(val){
+    list.push(val[0])
+  })
+  return list
 }
 
 /**
@@ -69,11 +81,15 @@ function listDailyFigureInfo(url) {
  * 行の高さを200に変更
  */
 function setInfoList(val){
+  const listedTitles = getListedTitles()
   const infoArray = getInfo(val);
-  sheet.appendRow(infoArray);
-  const lastRow = sheet.getLastRow()
-  addCheckbox(lastRow)
-  sheet.setRowHeight(lastRow, 200)
+  const title = infoArray[0]
+  if (listedTitles.indexOf(title) == -1){
+    sheet.appendRow(infoArray);
+    const lastRow = sheet.getLastRow()
+    addCheckbox(lastRow)
+    sheet.setRowHeight(lastRow, 200)
+  }
 }
 
 /**
@@ -111,6 +127,3 @@ function getTitleValue(entryTitle) {
     return "name属性が見つかりませんでした。";
   }
 }
-
-// TODO
-// シートに最新情報を記述（降順にて）　重複チェックを行う、シートに何も記載がなければ重複チェックは省く。
