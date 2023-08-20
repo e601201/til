@@ -2,5 +2,8 @@
 now_month=$(date +%Y_%m)
 today=$(date +%Y_%m_%d)
 echo "今日学んだこと" >> /Users/nagatadaichi/til/term/$now_month/$today.md
+cd /Users/nagatadaichi/til/term
 git add /Users/nagatadaichi/til/term/$now_month/$today.md
-git commit -m "$today _add_title"
+message=$today"_add_title"
+git commit -m "$message"
+git push origin main
