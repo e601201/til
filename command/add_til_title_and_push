@@ -1,9 +1,14 @@
 #!/bin/sh
 now_month=$(date +%Y_%m)
 today=$(date +%Y_%m_%d)
-echo "今日学んだこと" >> /Users/nagatadaichi/til/term/$now_month/$today.md
-cd /Users/nagatadaichi/til/term
-git add /Users/nagatadaichi/til/term/$now_month/$today.md
-message=$today"_add_title"
-git commit -m "$message"
-git push origin main
+file_path="/Users/nagatadaichi/til/term/$now_month/$today.md"
+if [ -f "$file_path" ]; then
+    echo "ファイルはすでに存在します。処理を中断します。"
+else
+    echo "今日学んだこと" >> "$file_path"
+    cd /Users/nagatadaichi/til/term
+    git add /Users/nagatadaichi/til/term/$now_month/$today.md
+    message=$today"_add_title"
+    git commit -m "$message"
+    git push origin main
+fi
