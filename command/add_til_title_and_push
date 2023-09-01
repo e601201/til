@@ -1,7 +1,13 @@
 #!/bin/sh
 now_month=$(date +%Y_%m)
 today=$(date +%Y_%m_%d)
-file_path="/Users/nagatadaichi/til/term/$now_month/$today.md"
+folder_path="/Users/nagatadaichi/til/term/$now_month"
+file_path="$folder_path/$today.md"
+# フォルダが存在しない場合、作成する
+if [ ! -d "$folder_path" ]; then
+    mkdir -p "$folder_path"
+fi
+
 if [ -f "$file_path" ]; then
     echo "ファイルはすでに存在します。処理を中断します。"
 else
@@ -11,4 +17,5 @@ else
     message=$today"_add_title"
     git commit -m "$message"
     git push origin main
+    echo "ファイルを新規作成しました"
 fi
